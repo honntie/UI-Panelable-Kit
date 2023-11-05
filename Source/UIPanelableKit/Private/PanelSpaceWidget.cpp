@@ -58,6 +58,6 @@ void UPanelSpaceWidget::AddPanel(UUIPanelWidget* Panel)
 	else
 	{
 		Cast<UCanvasPanelSlot>(Space->AddChild(Panel))->SetAnchors({0, 0, 1, 1});
-		if (!Panels.Find(Panel)) Panels.Add(Panel);
+		// if (!Panels.Find(Panel)) Panels.Add(Panel);
 	}
 }

@@ -3,6 +3,8 @@
 
 #include "PanelControllerComponent.h"
 
+// #include "Kismet/KismetSystemLibrary.h"
+
 // Sets default values for this component's properties
 UPanelControllerComponent::UPanelControllerComponent()
 {
@@ -48,6 +50,8 @@ bool UPanelControllerComponent::RegisterPanel(UUIPanelWidget* Panel)
 	if (PanelPool.Contains(PanelType)) return false;
 	
 	InitPanel(Panel);
+	Panel->SetVisibility(ESlateVisibility::Collapsed);
+	// UKismetSystemLibrary::PrintString(this, Panel->GetVisibility() == ESlateVisibility::Collapsed ? "Collapsed":"NotCollapsed");
 	PanelPool.Add(PanelType, Panel);
 	return true;
 }
@@ -61,6 +65,8 @@ bool UPanelControllerComponent::RegisterPanelForcibly(UUIPanelWidget* Panel)
 	else if (*RefPanel != Panel) InitPanel(Panel);
 	else return false;
 
+	Panel->SetVisibility(ESlateVisibility::Collapsed);
+	// UKismetSystemLibrary::PrintString(this, Panel->GetVisibility() == ESlateVisibility::Collapsed ? "Collapsed":"NotCollapsed");
 	PanelPool.Add(PanelType, Panel);
 	return true;
 }
