@@ -1,8 +1,13 @@
 # UI Panelable Kit
+* 2023/11/05
 * 前名: UIProject
 * 移植到UE5
 * 暂时适配UE4
 * 后续版本可能不为UE4做适配
+
+## 当前问题
+* Space Widget需要赋值到Panel Controller, 否则初次使用ShowPanel时会崩溃(委托未绑定事件导致)
+* 原则上, SpaceWidget::AddPanel不需要Panels::Add (PanelController注册时会直接显示面板)
 
 ## 迭代需求
 * 可选择PanelSlot类和初始化方式
