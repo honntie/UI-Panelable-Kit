@@ -12,6 +12,3 @@
 * 可选择PanelSlot类和初始化方式
 * Tick功能的使用(需知UserWidget的Tick触发机制)
 * 由于SpaceWidget继承与UIPanel, 理论上可实现父子关系
-
-### 已修复
-* SpaceWidget::RegisterPanel会直接显示面板
