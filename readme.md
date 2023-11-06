@@ -7,9 +7,11 @@
 
 ## 当前问题
 * Space Widget需要赋值到Panel Controller, 否则初次使用ShowPanel时会崩溃(委托未绑定事件导致)
-* 原则上, SpaceWidget::AddPanel不需要Panels::Add (PanelController注册时会直接显示面板)
 
 ## 迭代需求
 * 可选择PanelSlot类和初始化方式
 * Tick功能的使用(需知UserWidget的Tick触发机制)
 * 由于SpaceWidget继承与UIPanel, 理论上可实现父子关系
+
+### 已修复
+* SpaceWidget::RegisterPanel会直接显示面板
