@@ -10,7 +10,6 @@
 class UPanelControllerComponent;
 
 
-
 UCLASS(DisplayName="UI Panel")
 class UIPANELABLEKIT_API UUIPanelWidget : public UUserWidget
 {

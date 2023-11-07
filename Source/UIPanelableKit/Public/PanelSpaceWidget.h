@@ -63,6 +63,12 @@ public:
 
 #pragma region 蓝图可重载函数
 public:
+	/// Describe | 新增面板时对面板的处理, 默认把面板大小覆盖到全屏 (当前默认仅支持CanvasPanel, HorizontalBox, VerticalBox, Overlay, 其他情况请自行重写覆盖该函数) \n
+	/// Slot | 被添加面板的插槽 \n
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
+	void OnProcessPanel(UPanelSlot* PanelSlot);
+	virtual void OnProcessPanel_Implementation(UPanelSlot* Slot);
+	
 	/// Describe | 显示面板前的事件 \n
 	/// Target | 需显示的面板 \n
 	/// Return | 面板的显示属性 \n
