@@ -3,9 +3,9 @@
 	"Version": 1,
 	"VersionName": "1.0",
 	"FriendlyName": "UI Panelable Kit",
-	"Description": "",
+	"Description": "UI面板化插件",
 	"Category": "UI",
-	"CreatedBy": "",
+	"CreatedBy": "honntie",
 	"CreatedByURL": "",
 	"DocsURL": "",
 	"MarketplaceURL": "",
@@ -14,6 +14,7 @@
 	"IsBetaVersion": true,
 	"IsExperimentalVersion": false,
 	"Installed": false,
+	"EnabledByDefault" : true,
 	"Modules": [
 		{
 			"Name": "UIPanelableKit",
