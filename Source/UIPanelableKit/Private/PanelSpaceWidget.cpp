@@ -38,7 +38,9 @@ void UPanelSpaceWidget::OnHided_Implementation()
 
 void UPanelSpaceWidget::ShowPanel(UUIPanelWidget* Panel)
 {
+	// 未显示空间情况
 	if (State != EPanelState::Display) SetDisplay(DisplayVisibility);
+	
 	if (GetTopPanel() == Panel) return;
 	
 	Panel->SetDisplay(InShowVisibility(Panel));
@@ -51,8 +53,11 @@ void UPanelSpaceWidget::HidePanel(UUIPanelWidget* Panel)
 	// const int LastPanelsNum = Panels.Num();
 	// Panels.Remove(Panel);
 	// if (LastPanelsNum == Panels.Num()) return;
+	
 	if (Panels.Remove(Panel) == 0) return;
 	Panel->SetHidden(InHideVisibility(Panel));
+
+	// 没有面板情况
 	if (Panels.Num() == 0) SetHidden(HiddenVisibility);
 }
 

@@ -55,7 +55,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(Category="UI Panelable Kit | Panel Controller"))
 	bool RegisterPanel(UUIPanelWidget* Panel);
 
-	/// Describe | 注册面板并覆盖原面板, 调用时不再需要自动创建 \n
+	/// Describe | 注册面板并覆盖同类型面板, 调用时不再需要自动创建 \n
 	/// Panel | 加入注册的面板 \n
 	/// Return | 是否覆盖注册成功 (不存在面板), 如果false则不触发注册事件
 	UFUNCTION(BlueprintCallable, meta=(Category="UI Panelable Kit | Panel Controller"))

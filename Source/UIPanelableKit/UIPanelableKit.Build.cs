@@ -6,6 +6,7 @@ public class UIPanelableKit : ModuleRules
 {
 	public UIPanelableKit(ReadOnlyTargetRules Target) : base(Target)
 	{
+		PrecompileForTargets = PrecompileTargetsType.Any;
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
 		
