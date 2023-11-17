@@ -64,7 +64,7 @@ bool UPanelControllerComponent::RegisterPanelForcibly(UUIPanelWidget* Panel)
 	if (!RefPanel) InitPanel(Panel);
 	else if (*RefPanel != Panel) InitPanel(Panel);
 	else return false;
-
+	
 	Panel->SetVisibility(ESlateVisibility::Collapsed);
 	// UKismetSystemLibrary::PrintString(this, Panel->GetVisibility() == ESlateVisibility::Collapsed ? "Collapsed":"NotCollapsed");
 	PanelPool.Add(PanelType, Panel);

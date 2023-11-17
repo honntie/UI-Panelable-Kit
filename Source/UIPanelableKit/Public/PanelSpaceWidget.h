@@ -33,14 +33,14 @@ protected:
 
 #pragma region 重写虚函数
 public:
-	/// Describe | 初始化时获取根PanelWidget \n
-	virtual void NativeOnInitialized() override;
-
 	/// Describe | 显示时回调 \n
 	void OnShowed_Implementation() override;
 
 	/// Describe | 所有面板隐藏时回调 \n
 	void OnHided_Implementation() override;
+	
+	/// Describe | 初始化时获取根PanelWidget \n
+	virtual void NativeOnInitialized() override;
 #pragma endregion 
 
 #pragma region 蓝图函数

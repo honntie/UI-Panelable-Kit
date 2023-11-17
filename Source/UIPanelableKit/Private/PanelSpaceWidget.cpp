@@ -57,7 +57,7 @@ void UPanelSpaceWidget::HidePanel(UUIPanelWidget* Panel)
 	if (Panels.Remove(Panel) == 0) return;
 	Panel->SetHidden(InHideVisibility(Panel));
 
-	// 没有面板情况
+	// 没有面板显示情况
 	if (Panels.Num() == 0) SetHidden(HiddenVisibility);
 }
 
