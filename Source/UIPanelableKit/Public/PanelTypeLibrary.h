@@ -9,7 +9,7 @@
 /**
  * 
  */
-UENUM(BlueprintType, meta=(Category="UI Panelable Kit | Type"))
+UENUM(BlueprintType, meta=(Category="UI Layer Kit | Type"))
 enum class EPanelState : uint8
 {
 	Display,

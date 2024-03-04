@@ -1,3 +1,6 @@
 # 缓存文件
 .vs/
 Intermediate/
+Binaries/Win64/UnrealEditor-UIPanelableKit.dll
+
+Binaries/Win64/UnrealEditor-UIPanelableKit.pdb

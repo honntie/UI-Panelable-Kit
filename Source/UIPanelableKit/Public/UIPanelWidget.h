@@ -7,7 +7,7 @@
 #include "PanelTypeLibrary.h"
 #include "UIPanelWidget.generated.h"
 
-class UPanelControllerComponent;
+class UPanelController;
 
 
 UCLASS(DisplayName="UI Panel")
@@ -23,53 +23,51 @@ public:
 	
 #pragma region 蓝图函数
 public:
-	/// Describe | 获取控制面板的组件 \n
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(Category="UI Panelable Kit | UI Panel"))
-	UPanelControllerComponent* GetController() const { return SpaceController; }
+	/// @description 获取控制面板的组件 \n
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(Category="UI Layer Kit | UI Panel"))
+	UPanelController* GetController() const;
 
-	/// Describe | 设置显示状态, 同时回调OnShow \n
-	/// Visibility | 显示状态的数值 \n
-	UFUNCTION(BlueprintCallable, meta=(Category="UI Panelable Kit | UI Panel"))
-	void SetDisplay(ESlateVisibility DisplayerVisibility);
+	/// @description 设置显示状态, 同时回调OnShow \n
+	/// @param ShowVisibility 显示状态的数值 \n
+	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | UI Panel"))
+	void SetShow(ESlateVisibility ShowVisibility);
 
-	/// Describe | 设置隐藏状态, 同时回调OnHided \n
-	/// Visibility | 隐藏状态的数值 \n
-	UFUNCTION(BlueprintCallable, meta=(Category="UI Panelable Kit | UI Panel"))
+	/// @description 设置隐藏状态, 同时回调OnHide \n
+	/// @param HiddenVisibility 隐藏状态的数值 \n
+	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | UI Panel"))
 	void SetHidden(ESlateVisibility HiddenVisibility);
 #pragma endregion 
 	
 #pragma region 蓝图可重载函数
 public:
-	/// Describe | 在PanelController注册时触发 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | UI Panel"))
+	/// @description 在PanelController注册时触发 \n
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
 	void OnRegistered();
-	virtual void OnRegistered_Implementation() {}
 
-	/// Describe | 在PanelController注销时触发 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | UI Panel"))
+	/// @description 在PanelController注销时触发 \n
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
 	void OnLogouted();
-	virtual void OnLogouted_Implementation() {}
 	
-	/// Describe | 显示时回调的函数 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | UI Panel"))
-	void OnShowed();
-	virtual void OnShowed_Implementation() {}
+	/// @description 显示时回调的函数 \n
+	/// @param ShowVisibility 触发时设置的值，如果希望面板有特殊效果可修改此值 \n
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
+	void OnShow(UPARAM(ref)ESlateVisibility& ShowVisibility);
 
-	/// Describe | 隐藏时回调的函数 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | UI Panel"))
-	void OnHided();
-	virtual void OnHided_Implementation() {}
+	/// @description 隐藏时回调的函数 \n
+	/// @param HiddenVisibility 触发时设置的值，如果希望面板有特殊效果可修改此值 \n
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
+	void OnHide(UPARAM(ref)ESlateVisibility& HiddenVisibility);
 #pragma endregion 
 	
 #pragma region C++部分
-private:
-	/// Describe | 控制面板 \n
-	UPanelControllerComponent* SpaceController;
+protected:
+	/// @description 控制面板 \n
+	UPanelController* SpaceController;
 
 public:
-	/// Describe | 设置控制面板的组件 \n
-	/// Owner | 控制面板 \n
-	void SetController(UPanelControllerComponent* Owner) { SpaceController = Owner; };
+	/// @description 设置控制面板的组件 \n
+	/// @param Owner 控制面板 \n
+	void SetController(UPanelController* Owner);
 #pragma endregion 
 
 };

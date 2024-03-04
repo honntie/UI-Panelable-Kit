@@ -6,45 +6,14 @@
 // #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values for this component's properties
-UPanelControllerComponent::UPanelControllerComponent()
+UPanelController::UPanelController()
 {
-	PrimaryComponentTick.bCanEverTick = false;
-	
 	TargetSpace = TSubclassOf<UPanelSpaceWidget>();
 
 	PanelSpace = nullptr;
 }
 
-// Called when the game starts
-void UPanelControllerComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// PanelSpace = CreateWidget<UPanelSpaceWidget>(GetWorld(), TargetSpace);
-	// if (IsValid(PanelSpace)) SetPanelSpace(PanelSpace);
-	if (TargetSpace != TSubclassOf<UPanelSpaceWidget>()) SetPanelSpace(CreateWidget<UPanelSpaceWidget>(GetWorld(), TargetSpace));
-}
-
-void UPanelControllerComponent::SetPanelSpace(UPanelSpaceWidget* Space)
-{
-	if (PanelSpace == Space) return;
-
-	// 注销上一个事件
-	if (PanelSpace)
-	{
-		PanelSpace->OnEnabled.Unbind();
-		PanelSpace->OnDisabled.Unbind();
-		PanelSpace->OnLogouted();
-	}
-
-	// 注册当前的事件
-	PanelSpace = Space;
-	PanelSpace->OnEnabled.BindLambda([&](){ OnSpaceEnabled.Broadcast(); });
-	PanelSpace->OnDisabled.BindLambda([&](){ OnSpaceDisabled.Broadcast(); });
-	PanelSpace->OnRegistered();
-}
-
-bool UPanelControllerComponent::RegisterPanel(UUIPanelWidget* Panel)
+bool UPanelController::RegisterPanel(UUIPanelWidget* Panel)
 {
 	UClass* PanelType = Panel->GetClass();
 	if (PanelPool.Contains(PanelType)) return false;
@@ -56,7 +25,7 @@ bool UPanelControllerComponent::RegisterPanel(UUIPanelWidget* Panel)
 	return true;
 }
 
-bool UPanelControllerComponent::RegisterPanelForcibly(UUIPanelWidget* Panel)
+bool UPanelController::RegisterPanelForcibly(UUIPanelWidget* Panel)
 {
 	UClass* PanelType = Panel->GetClass();
 	UUIPanelWidget** RefPanel = PanelPool.Find(PanelType);
@@ -71,7 +40,7 @@ bool UPanelControllerComponent::RegisterPanelForcibly(UUIPanelWidget* Panel)
 	return true;
 }
 
-bool UPanelControllerComponent::LogoutPanel(UUIPanelWidget* Panel)
+bool UPanelController::LogoutPanel(UUIPanelWidget* Panel)
 {
 	if (!IsValid(PanelSpace))
 	{
@@ -87,7 +56,7 @@ bool UPanelControllerComponent::LogoutPanel(UUIPanelWidget* Panel)
 	return true;
 }
 
-UUIPanelWidget* UPanelControllerComponent::PushUI(TSubclassOf<UUIPanelWidget> PanelTarget)
+UUIPanelWidget* UPanelController::PushUI(TSubclassOf<UUIPanelWidget> PanelTarget)
 {
 	// SetOnView(true);
 	if (!IsValid(PanelSpace))
@@ -101,7 +70,7 @@ UUIPanelWidget* UPanelControllerComponent::PushUI(TSubclassOf<UUIPanelWidget> Pa
 	return Target;
 }
 
-void UPanelControllerComponent::PopUI(bool IsLogout)
+void UPanelController::PopUI(bool IsLogout)
 {
 	if (!IsValid(PanelSpace))
 	{
@@ -115,7 +84,7 @@ void UPanelControllerComponent::PopUI(bool IsLogout)
 	if (IsLogout) LogoutPanel(Panel);
 }
 
-UUIPanelWidget* UPanelControllerComponent::GetPanelLazily(TSubclassOf<UUIPanelWidget> PanelTarget)
+UUIPanelWidget* UPanelController::GetPanelLazily(TSubclassOf<UUIPanelWidget> PanelTarget)
 {
 	if (!IsValid(PanelSpace))
 	{
@@ -135,7 +104,7 @@ UUIPanelWidget* UPanelControllerComponent::GetPanelLazily(TSubclassOf<UUIPanelWi
 	return Panel;
 }
 
-void UPanelControllerComponent::InitPanel(UUIPanelWidget* Panel)
+void UPanelController::InitPanel(UUIPanelWidget* Panel)
 {
 	if (!IsValid(PanelSpace))
 	{
@@ -146,4 +115,34 @@ void UPanelControllerComponent::InitPanel(UUIPanelWidget* Panel)
 	Panel->SetController(this);
 	PanelSpace->AddPanel(Panel);
 	Panel->OnRegistered();
+}
+
+UPanelSpaceWidget* UPanelController::GetPanelSpace()
+{
+	if (!IsValid(PanelSpace))
+	{
+		if (TargetSpace != TSubclassOf<UPanelSpaceWidget>())
+			SetPanelSpace(CreateWidget<UPanelSpaceWidget>(GetWorld(), TargetSpace));
+		else SetPanelSpace(CreateWidget<UPanelSpaceWidget>(GetWorld()));
+	}
+	return PanelSpace;
+}
+
+void UPanelController::SetPanelSpace(UPanelSpaceWidget* Space)
+{
+	if (IsValid(PanelSpace)) return;
+
+	// 注销上一个事件
+	// if (PanelSpace)
+	// {
+	// 	PanelSpace->OnEnabled.Unbind();
+	// 	PanelSpace->OnDisabled.Unbind();
+	// 	PanelSpace->OnLogouted();
+	// }
+
+	// 注册当前的事件
+	PanelSpace = Space;
+	PanelSpace->OnEnabled.BindLambda([&](){ OnSpaceEnabled.Broadcast(); });
+	PanelSpace->OnDisabled.BindLambda([&](){ OnSpaceDisabled.Broadcast(); });
+	PanelSpace->OnRegistered();
 }

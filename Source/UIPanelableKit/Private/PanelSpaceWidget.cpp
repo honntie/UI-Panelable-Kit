@@ -24,26 +24,26 @@ void UPanelSpaceWidget::NativeOnInitialized()
 	if (!IsValid(Space)) PIE_Error("NotPanelWidget", "RootWidget is not PanelWidget. Error Class:" + GetName()); 
 }
 
-void UPanelSpaceWidget::OnShowed_Implementation()
+void UPanelSpaceWidget::OnShow_Implementation(UPARAM(ref)ESlateVisibility& UsedVisibility)
 {
-	UUIPanelWidget::OnShowed_Implementation();
+	UUIPanelWidget::OnShow_Implementation(UsedVisibility);
 	OnEnabled.Execute();
 }
 
-void UPanelSpaceWidget::OnHided_Implementation()
+void UPanelSpaceWidget::OnHide_Implementation(UPARAM(ref)ESlateVisibility& UsedVisibility)
 {
-	UUIPanelWidget::OnHided_Implementation();
+	UUIPanelWidget::OnHide_Implementation(UsedVisibility);
 	OnDisabled.Execute();
 }
 
 void UPanelSpaceWidget::ShowPanel(UUIPanelWidget* Panel)
 {
 	// 未显示空间情况
-	if (State != EPanelState::Display) SetDisplay(DisplayVisibility);
+	if (State != EPanelState::Display) SetShow(ShowVisibility);
 	
 	if (GetTopPanel() == Panel) return;
 	
-	Panel->SetDisplay(InShowVisibility(Panel));
+	Panel->SetShow(OnShowPanel(Panel));
 	Panels.Remove(Panel);
 	Panels.Add(Panel);
 }
@@ -55,10 +55,15 @@ void UPanelSpaceWidget::HidePanel(UUIPanelWidget* Panel)
 	// if (LastPanelsNum == Panels.Num()) return;
 	
 	if (Panels.Remove(Panel) == 0) return;
-	Panel->SetHidden(InHideVisibility(Panel));
+	Panel->SetHidden(OnHidePanel(Panel));
 
 	// 没有面板显示情况
 	if (Panels.Num() == 0) SetHidden(HiddenVisibility);
+}
+
+UUIPanelWidget* UPanelSpaceWidget::GetTopPanel() const
+{
+	return Panels.Num() > 0 ? Panels.Last(0) : nullptr;
 }
 
 void UPanelSpaceWidget::OnProcessPanel_Implementation(UPanelSlot* PanelSlot)
@@ -82,6 +87,16 @@ void UPanelSpaceWidget::OnProcessPanel_Implementation(UPanelSlot* PanelSlot)
 		OverlaySlot->SetHorizontalAlignment(HAlign_Fill);
 		OverlaySlot->SetVerticalAlignment(VAlign_Fill);
 	}
+}
+
+ESlateVisibility UPanelSpaceWidget::OnShowPanel_Implementation(UUIPanelWidget* Target)
+{
+	return ESlateVisibility::Visible;
+}
+
+ESlateVisibility UPanelSpaceWidget::OnHidePanel_Implementation(UUIPanelWidget* Target)
+{
+	return ESlateVisibility::Collapsed;
 }
 
 void UPanelSpaceWidget::AddPanel(UUIPanelWidget* Panel)

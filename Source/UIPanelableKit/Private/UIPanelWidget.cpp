@@ -4,16 +4,34 @@
 #include "UIPanelWidget.h"
 
 
-void UUIPanelWidget::SetDisplay(ESlateVisibility DisplayerVisibility)
+UPanelController* UUIPanelWidget::GetController() const
 {
-	SetVisibility(DisplayerVisibility);
+	return SpaceController;
+}
+
+void UUIPanelWidget::SetShow(ESlateVisibility ShowVisibility)
+{
+	OnShow(ShowVisibility);
+	SetVisibility(ShowVisibility);
 	State = EPanelState::Display;
-	OnShowed();
 }
 
 void UUIPanelWidget::SetHidden(ESlateVisibility HiddenVisibility)
 {
+	OnHide(HiddenVisibility);
 	SetVisibility(HiddenVisibility);
 	State = EPanelState::Hidden;
-	OnHided();
+}
+
+void UUIPanelWidget::OnRegistered_Implementation() {}
+
+void UUIPanelWidget::OnLogouted_Implementation() {}
+
+void UUIPanelWidget::OnShow_Implementation(ESlateVisibility& ShowVisibility) {}
+
+void UUIPanelWidget::OnHide_Implementation(ESlateVisibility& HiddenVisibility) {}
+
+void UUIPanelWidget::SetController(UPanelController* Owner)
+{
+	SpaceController = Owner;
 }

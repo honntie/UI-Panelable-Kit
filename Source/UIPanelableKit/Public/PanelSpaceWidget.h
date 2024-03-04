@@ -17,94 +17,95 @@ class UIPANELABLEKIT_API UPanelSpaceWidget : public UUIPanelWidget
 	
 #pragma region 蓝图变量
 public:
-	/// Describe | 空间显示时的枚举值 \n
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(Category="UI Panelable Kit | Panel Space"))
-	ESlateVisibility DisplayVisibility = ESlateVisibility::Visible;
+	/// @description 空间显示时的枚举值 \n
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(Category="UI Layer Kit | Panel Space"))
+	ESlateVisibility ShowVisibility = ESlateVisibility::Visible;
 	
-	/// Describe | 空间隐藏时的枚举值 \n
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(Category="UI Panelable Kit | Panel Space"))
+	/// @description 空间隐藏时的枚举值 \n
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(Category="UI Layer Kit | Panel Space"))
 	ESlateVisibility HiddenVisibility = ESlateVisibility::Collapsed;
 	
 protected:
-	/// Describe | 当前已显示的所有面板, 索引越小面板越靠后 \n
-	UPROPERTY(BlueprintReadWrite, meta=(Category="UI Panelable Kit | Panel Space"))
+	/// @description 默认创建的控制器类型 \n
+	UPROPERTY(EditAnywhere, meta=(Category="UI Layer Kit | Panel Space"))
+	TSubclassOf<UUserInterfaceLayerBase> DefaultLayer;
+
+	/// @description 当前已显示的所有面板, 索引越小面板越靠后 \n
+	UPROPERTY(BlueprintReadOnly, meta=(Category="UI Layer Kit | Panel Space"))
 	TArray<UUIPanelWidget*> Panels;
 #pragma endregion 
 
 #pragma region 重写虚函数
 public:
-	/// Describe | 显示时回调 \n
-	void OnShowed_Implementation() override;
+	/// @description 显示时回调 \n
+	virtual void OnShow_Implementation(UPARAM(ref)ESlateVisibility& UsedVisibility) override;
 
-	/// Describe | 所有面板隐藏时回调 \n
-	void OnHided_Implementation() override;
+	/// @description 所有面板隐藏时回调 \n
+	virtual void OnHide_Implementation(UPARAM(ref)ESlateVisibility& UsedVisibility) override;
 	
-	/// Describe | 初始化时获取根PanelWidget \n
+	/// @description 初始化时获取根PanelWidget \n
 	virtual void NativeOnInitialized() override;
 #pragma endregion 
 
 #pragma region 蓝图函数
 public:
-	/// Describe | 显示面板, 显示完成后会加进Panels并成为新的TopPanel \n
-	/// Panel | 面板对象 \n
-	UFUNCTION(BlueprintCallable, meta=(Category="UI Panelable Kit | Panel Space"))
+	/// @description 显示面板, 显示完成后会加进Panels并成为新的TopPanel \n
+	/// @param Panel 面板对象 \n
+	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | Panel Space"))
 	void ShowPanel(UUIPanelWidget* Panel);
 	
-	/// Describe | 隐藏面板， 隐藏前将自身从Panels删除 \n
-	/// Panel | 面板对象 \n
-	UFUNCTION(BlueprintCallable, meta=(Category="UI Panelable Kit | Panel Space"))
+	/// @description 隐藏面板， 隐藏前将自身从Panels删除 \n
+	/// @param Panel 面板对象 \n
+	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | Panel Space"))
 	void HidePanel(UUIPanelWidget* Panel);
 
-	/// Describe | 获取当前最顶层的面板, 也就是Panels的最末端 \n
-	/// Return | 返回面板 \n
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(Category="UI Panelable Kit | Panel Space"))
-	UUIPanelWidget* GetTopPanel() const { return Panels.Num() > 0 ? Panels.Last(0):nullptr; }
+	/// @description 获取当前最顶层的面板, 也就是Panels的最末端 \n
+	/// @return 返回面板 \n
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(Category="UI Layer Kit | Panel Space"))
+	UUIPanelWidget* GetTopPanel() const;
 #pragma endregion
 
 #pragma region 蓝图可重载函数
 public:
-	/// Describe | 新增面板时对面板的处理, 默认把面板大小覆盖到全屏 (当前默认仅支持CanvasPanel, HorizontalBox, VerticalBox, Overlay, 其他情况请自行重写覆盖该函数) \n
-	/// Slot | 被添加面板的插槽 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
+	/// @description 新增面板时对面板的处理, 默认把面板大小覆盖到全屏 (当前默认仅支持CanvasPanel, HorizontalBox, VerticalBox, Overlay, 其他情况请自行重写覆盖该函数) \n
+	/// @param PanelSlot 被添加面板的插槽 \n
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | Panel Space"))
 	void OnProcessPanel(UPanelSlot* PanelSlot);
-	virtual void OnProcessPanel_Implementation(UPanelSlot* Slot);
-	
-	/// Describe | 显示面板前的事件 \n
-	/// Target | 需显示的面板 \n
-	/// Return | 面板的显示属性 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
-	ESlateVisibility InShowVisibility(UUIPanelWidget* Target);
-	virtual ESlateVisibility InShowVisibility_Implementation(UUIPanelWidget* Target) { return ESlateVisibility::Visible; }
-	
-	/// Describe | 隐藏面板前的事件 \n
-	/// Target | 需隐藏的面板 \n
-	/// Return | 面板的隐藏属性 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
-	ESlateVisibility InHideVisibility(UUIPanelWidget* Target);
-	virtual ESlateVisibility InHideVisibility_Implementation(UUIPanelWidget* Target) { return ESlateVisibility::Collapsed; }
+
+	/// @description 显示面板前的事件 \n
+	/// @param Target 需显示的面板 \n
+	/// @return 面板的显示属性 \n
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | Panel Space"))
+	ESlateVisibility OnShowPanel(UUIPanelWidget* Target);
+
+	/// @description 隐藏面板前的事件 \n
+	/// @param Target 需隐藏的面板 \n
+	/// @return 面板的隐藏属性 \n
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | Panel Space"))
+	ESlateVisibility OnHidePanel(UUIPanelWidget* Target);
 #pragma endregion
 
 #pragma region C++部分
 public:
-	/// Describe | 激活委托 \n
+	/// @description 激活委托 \n
 	FOnChangedActivedDelegate OnEnabled;
 	
-	/// Describe | 关闭委托 \n
+	/// @description 关闭委托 \n
 	FOnChangedActivedDelegate OnDisabled;
 	
-	/// Describe | 将新的面板加入到当前的面板空间 \n
-	/// Panel | 面板对象 \n
+	/// @description 将新的面板加入到当前的面板空间 \n
+	/// @param Panel 面板对象 \n
 	void AddPanel(UUIPanelWidget* Panel);
 
 private:
-	/// Describe | 存放面板地方 \n
+	/// @description 存放面板地方 \n
 	UPanelWidget* Space;
 
 #pragma endregion 
 };
 
 
-/// Describe | 输出错误到MessageLog的Play In Editor \n
-/// Title | 前缀消息 \n
-/// Info | 具体消息 \n
+/// @description 输出错误到MessageLog的Play In Editor \n
+/// @param Title 前缀消息 \n
+/// @param Info 具体消息 \n
 void PIE_Error(const FString& Title, const FString& Info);
