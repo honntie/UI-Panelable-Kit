@@ -82,17 +82,18 @@ public:
 #pragma endregion
 
 #pragma region C++部分
-private:
-	/// @description SpaceWidget的Getter \n
-	/// @return 返回对象 \n
-	UFUNCTION(BlueprintGetter)
-	virtual UPanelSpaceWidget* GetPanelSpace();
-
+public:
 	/// @description SpaceWidget的Setter \n
 	/// @param Space 设置对象 \n
 	UFUNCTION(BlueprintSetter)
-	virtual void SetPanelSpace(UPanelSpaceWidget* Space);
+	void SetPanelSpace(UPanelSpaceWidget* Space);
 	
+	/// @description SpaceWidget的Getter \n
+	/// @return 返回对象 \n
+	UFUNCTION(BlueprintGetter)
+	UPanelSpaceWidget* GetPanelSpace();
+
+private:
 	/// @description 获取面板, 如果面板不存在则自动创建到PanelSpace里 \n
 	/// @param PanelTarget 需要获取的面板类型 \n
 	/// @return 面板类型 \n

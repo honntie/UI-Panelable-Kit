@@ -2,13 +2,13 @@
 
 
 #include "PanelSpaceWidget.h"
+#include "PanelControllerComponent.h"
 #include "Components/PanelSlot.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBoxSlot.h"
 #include "Components/OverlaySlot.h"
 #include "Components/PanelWidget.h"
 #include "Components/VerticalBoxSlot.h"
-
 
 void PIE_Error(const FString& Title, const FString& Info)
 {
@@ -108,3 +108,18 @@ void UPanelSpaceWidget::AddPanel(UUIPanelWidget* Panel)
 		// if (!Panels.Find(Panel)) Panels.Add(Panel);
 	}
 }
+
+UPanelController* UPanelSpaceWidget::GetUser()
+{
+	if (User == nullptr) SetUser(NewObject<UPanelController>(this));
+	return User;
+}
+
+void UPanelSpaceWidget::SetUser(UPanelController* Target)
+{
+	if (User == nullptr)
+	{
+		User = Target;
+		Target->SetPanelSpace(this);
+ 	}
+ }

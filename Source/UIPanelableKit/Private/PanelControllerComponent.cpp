@@ -142,6 +142,7 @@ void UPanelController::SetPanelSpace(UPanelSpaceWidget* Space)
 
 	// 注册当前的事件
 	PanelSpace = Space;
+	PanelSpace->SetUser(this);
 	PanelSpace->OnEnabled.BindLambda([&](){ OnSpaceEnabled.Broadcast(); });
 	PanelSpace->OnDisabled.BindLambda([&](){ OnSpaceDisabled.Broadcast(); });
 	PanelSpace->OnRegistered();

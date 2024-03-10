@@ -9,7 +9,6 @@
 DECLARE_DELEGATE(FOnChangedActivedDelegate)
 
 
-
 UCLASS(DisplayName="Panel Space")
 class UIPANELABLEKIT_API UPanelSpaceWidget : public UUIPanelWidget
 {
@@ -28,8 +27,12 @@ public:
 protected:
 	/// @description 默认创建的控制器类型 \n
 	UPROPERTY(EditAnywhere, meta=(Category="UI Layer Kit | Panel Space"))
-	TSubclassOf<UUserInterfaceLayerBase> DefaultLayer;
+	TSubclassOf<UPanelController> DefaultController;
 
+	/// @description 使用自身的控制器，如果不存在则会自动创建一个 \n
+	UPROPERTY(BlueprintReadWrite,BlueprintSetter=SetUser,BlueprintGetter=GetUser, meta=(Category="UI Layer Kit | Panel Space"))
+	UPanelController* User = nullptr;
+	
 	/// @description 当前已显示的所有面板, 索引越小面板越靠后 \n
 	UPROPERTY(BlueprintReadOnly, meta=(Category="UI Layer Kit | Panel Space"))
 	TArray<UUIPanelWidget*> Panels;
@@ -96,6 +99,16 @@ public:
 	/// @description 将新的面板加入到当前的面板空间 \n
 	/// @param Panel 面板对象 \n
 	void AddPanel(UUIPanelWidget* Panel);
+
+	/// @description 获得使用自身空间的控制器 \n
+	/// @return 返回控制器
+	UFUNCTION(BlueprintGetter)
+	UPanelController* GetUser();
+
+	/// @description 设置新的控制器，如果设置之前自身已被使用则无法设置 \n
+	/// @param Target 新的控制器 \n
+	UFUNCTION(BlueprintSetter)
+	void SetUser(UPanelController* Target);
 
 private:
 	/// @description 存放面板地方 \n
