@@ -27,9 +27,25 @@ void UUIPanelWidget::OnRegistered_Implementation() {}
 
 void UUIPanelWidget::OnLogouted_Implementation() {}
 
-void UUIPanelWidget::OnShow_Implementation(ESlateVisibility& ShowVisibility) {}
+void UUIPanelWidget::OnShow_Native(ESlateVisibility& ShowVisibility)
+{
+}
 
-void UUIPanelWidget::OnHide_Implementation(ESlateVisibility& HiddenVisibility) {}
+void UUIPanelWidget::OnHide_Native(ESlateVisibility& HideVisibility)
+{
+}
+
+ESlateVisibility UUIPanelWidget::OnShow_Implementation(ESlateVisibility OriginalVisibility)
+{
+	OnShow_Native(OriginalVisibility);
+	return OriginalVisibility;
+}
+
+ESlateVisibility UUIPanelWidget::OnHide_Implementation(ESlateVisibility OriginalVisibility)
+{
+	OnHide_Native(OriginalVisibility);
+	return OriginalVisibility;
+}
 
 void UUIPanelWidget::SetController(UPanelController* Owner)
 {

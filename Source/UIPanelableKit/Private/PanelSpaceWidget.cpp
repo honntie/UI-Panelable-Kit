@@ -24,15 +24,15 @@ void UPanelSpaceWidget::NativeOnInitialized()
 	if (!IsValid(Space)) PIE_Error("NotPanelWidget", "RootWidget is not PanelWidget. Error Class:" + GetName()); 
 }
 
-void UPanelSpaceWidget::OnShow_Implementation(UPARAM(ref)ESlateVisibility& UsedVisibility)
+void UPanelSpaceWidget::OnShow_Native(ESlateVisibility& ShowVisibility)
 {
-	UUIPanelWidget::OnShow_Implementation(UsedVisibility);
+	UUIPanelWidget::OnShow_Native(ShowVisibility);
 	OnEnabled.Execute();
 }
 
-void UPanelSpaceWidget::OnHide_Implementation(UPARAM(ref)ESlateVisibility& UsedVisibility)
+void UPanelSpaceWidget::OnHide_Native(ESlateVisibility& HideVisibility)
 {
-	UUIPanelWidget::OnHide_Implementation(UsedVisibility);
+	UUIPanelWidget::OnHide_Native(HideVisibility);
 	OnDisabled.Execute();
 }
 

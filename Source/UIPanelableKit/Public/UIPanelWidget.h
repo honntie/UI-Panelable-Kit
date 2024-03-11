@@ -48,15 +48,17 @@ public:
 	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
 	void OnLogouted();
 	
-	/// @description 显示时回调的函数 \n
-	/// @param ShowVisibility 触发时设置的值，如果希望面板有特殊效果可修改此值 \n
+	/// @description 显示时回调的函数（仅触发和蓝图继承用） \n
+	/// @param OriginalVisibility 触发时设置的值 \n
+	/// @return 最终效果的值
 	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
-	void OnShow(UPARAM(ref)ESlateVisibility& ShowVisibility);
+	ESlateVisibility OnShow(ESlateVisibility OriginalVisibility);
 
-	/// @description 隐藏时回调的函数 \n
-	/// @param HiddenVisibility 触发时设置的值，如果希望面板有特殊效果可修改此值 \n
+	/// @description 隐藏时回调的函数（仅触发和蓝图继承用） \n
+	/// @param OriginalVisibility 触发时设置的值 \n
+	/// @return 最终效果的值
 	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
-	void OnHide(UPARAM(ref)ESlateVisibility& HiddenVisibility);
+	ESlateVisibility OnHide(ESlateVisibility OriginalVisibility);
 #pragma endregion 
 	
 #pragma region C++部分
@@ -64,6 +66,24 @@ protected:
 	/// @description 控制面板 \n
 	UPanelController* SpaceController;
 
+	/// @description 显示时回调的函数（仅C++继承用） \n
+	/// @param ShowVisibility 触发时设置的值，如果希望面板有特殊效果可修改此值 \n
+	virtual void OnShow_Native(ESlateVisibility& ShowVisibility);
+	
+	/// @description 隐藏时回调的函数（仅C++继承用） \n
+	/// @param HideVisibility 触发时设置的值，如果希望面板有特殊效果可修改此值 \n
+	virtual void OnHide_Native(ESlateVisibility& HideVisibility);
+	
+	/// @description 此函数仅声明，需要重写OnShow_Native \n
+	/// @param OriginalVisibility 此函数仅声明，需要重写OnShow_Native \n
+	/// @return 此函数仅声明，需要重写OnShow_Native
+	virtual ESlateVisibility OnShow_Implementation(ESlateVisibility OriginalVisibility);
+	
+	/// @description 此函数仅声明，需要重写OnHide_Native \n
+	/// @param OriginalVisibility 此函数仅声明，需要重写OnHide_Native \n
+	/// @return 此函数仅声明，需要重写OnHide_Native
+	virtual ESlateVisibility OnHide_Implementation(ESlateVisibility OriginalVisibility);
+	
 public:
 	/// @description 设置控制面板的组件 \n
 	/// @param Owner 控制面板 \n

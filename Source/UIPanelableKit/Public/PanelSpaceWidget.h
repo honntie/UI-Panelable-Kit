@@ -41,10 +41,10 @@ protected:
 #pragma region 重写虚函数
 public:
 	/// @description 显示时回调 \n
-	virtual void OnShow_Implementation(UPARAM(ref)ESlateVisibility& UsedVisibility) override;
+	virtual void OnShow_Native(ESlateVisibility& ShowVisibility) override;
 
 	/// @description 所有面板隐藏时回调 \n
-	virtual void OnHide_Implementation(UPARAM(ref)ESlateVisibility& UsedVisibility) override;
+	virtual void OnHide_Native(ESlateVisibility& HideVisibility) override;
 	
 	/// @description 初始化时获取根PanelWidget \n
 	virtual void NativeOnInitialized() override;
