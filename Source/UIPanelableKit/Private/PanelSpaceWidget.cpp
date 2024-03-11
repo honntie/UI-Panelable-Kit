@@ -10,6 +10,13 @@
 #include "Components/PanelWidget.h"
 #include "Components/VerticalBoxSlot.h"
 
+#define CHECK_ROOT_PANEL(Result) \
+	if (!IsValid(Space)) \
+	{ \
+		PIE_Error("NotPanelWidget", "RootWidget is not PanelWidget. Error Class:" + GetName()); \
+		return Result; \
+	}
+
 void PIE_Error(const FString& Title, const FString& Info)
 {
 	FMessageLog("PIE").Error(FText::FromString(Title + ": " + Info));
@@ -21,7 +28,7 @@ void UPanelSpaceWidget::NativeOnInitialized()
 
 	Space = Cast<UPanelWidget>(GetRootWidget());
 	
-	if (!IsValid(Space)) PIE_Error("NotPanelWidget", "RootWidget is not PanelWidget. Error Class:" + GetName()); 
+	CHECK_ROOT_PANEL()
 }
 
 void UPanelSpaceWidget::OnShow_Native(ESlateVisibility& ShowVisibility)
@@ -101,12 +108,9 @@ ESlateVisibility UPanelSpaceWidget::OnHidePanel_Implementation(UUIPanelWidget* T
 
 void UPanelSpaceWidget::AddPanel(UUIPanelWidget* Panel)
 {
-	if (!IsValid(Space)) PIE_Error("NotPanelWidget", "RootWidget is not PanelWidget. Error Class:" + GetName()); 
-	else
-	{
-		OnProcessPanel(Space->AddChild(Panel));
-		// if (!Panels.Find(Panel)) Panels.Add(Panel);
-	}
+	CHECK_ROOT_PANEL()
+	OnProcessPanel(Space->AddChild(Panel));
+	// if (!Panels.Find(Panel)) Panels.Add(Panel);
 }
 
 UPanelController* UPanelSpaceWidget::GetUser()
