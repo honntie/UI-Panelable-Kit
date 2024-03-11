@@ -6,7 +6,6 @@
 #include "UIPanelWidget.h"
 #include "PanelSpaceWidget.generated.h"
 
-DECLARE_DELEGATE(FOnChangedActivedDelegate)
 
 
 UCLASS(DisplayName="Panel Space")
@@ -40,12 +39,6 @@ protected:
 
 #pragma region 重写虚函数
 public:
-	/// @description 显示时回调 \n
-	virtual void OnShow_Native(ESlateVisibility& ShowVisibility) override;
-
-	/// @description 所有面板隐藏时回调 \n
-	virtual void OnHide_Native(ESlateVisibility& HideVisibility) override;
-	
 	/// @description 初始化时获取根PanelWidget \n
 	virtual void NativeOnInitialized() override;
 #pragma endregion 
@@ -90,12 +83,6 @@ public:
 
 #pragma region C++部分
 public:
-	/// @description 激活委托 \n
-	FOnChangedActivedDelegate OnEnabled;
-	
-	/// @description 关闭委托 \n
-	FOnChangedActivedDelegate OnDisabled;
-	
 	/// @description 将新的面板加入到当前的面板空间 \n
 	/// @param Panel 面板对象 \n
 	void AddPanel(UUIPanelWidget* Panel);

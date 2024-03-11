@@ -23,10 +23,6 @@ void UUIPanelWidget::SetHidden(ESlateVisibility HiddenVisibility)
 	State = EPanelState::Hidden;
 }
 
-void UUIPanelWidget::OnRegistered_Implementation() {}
-
-void UUIPanelWidget::OnLogouted_Implementation() {}
-
 void UUIPanelWidget::OnShow_Native(ESlateVisibility& ShowVisibility)
 {
 }

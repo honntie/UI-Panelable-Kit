@@ -7,8 +7,6 @@
 #include "PanelSpaceWidget.h"
 #include "PanelControllerComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSpaceChagedDelegate);
-
 
 UCLASS(NotBlueprintable, DisplayName="Panel Controller")
 class UIPANELABLEKIT_API UPanelController : public UPrimaryDataAsset
@@ -27,14 +25,6 @@ public:
 	/// @description 显示面板的Widget空间，空间已被释放或者控制还未使用时可以重新设置，否则其Setter将会失效，如果第一次Getter则会根据TargetSpace生成空间 \n
 	UPROPERTY(BlueprintReadWrite, BlueprintSetter=SetPanelSpace, BlueprintGetter=GetPanelSpace, meta=(Category="UI Layer Kit | Panel Controller"))
 	UPanelSpaceWidget* PanelSpace = nullptr;
-
-	/// @description 面板空间激活时触发 \n
-	UPROPERTY(BlueprintAssignable, meta=(Category="UI Layer Kit | Panel Controller"))
-	FOnSpaceChagedDelegate OnSpaceEnabled;
-
-	/// @description 面板空间关闭时触发
-	UPROPERTY(BlueprintAssignable, meta=(Category="UI Layer Kit | Panel Controller"))
-	FOnSpaceChagedDelegate OnSpaceDisabled;
 
 protected:
 	/// @description 记录所有面板的地方 \n

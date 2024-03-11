@@ -40,14 +40,6 @@ public:
 	
 #pragma region 蓝图可重载函数
 public:
-	/// @description 在PanelController注册时触发 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
-	void OnRegistered();
-
-	/// @description 在PanelController注销时触发 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | UI Panel"))
-	void OnLogouted();
-	
 	/// @description 显示时回调的函数（仅触发和蓝图继承用） \n
 	/// @param OriginalVisibility 触发时设置的值 \n
 	/// @return 最终效果的值

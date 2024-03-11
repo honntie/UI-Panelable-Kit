@@ -31,22 +31,10 @@ void UPanelSpaceWidget::NativeOnInitialized()
 	CHECK_ROOT_PANEL()
 }
 
-void UPanelSpaceWidget::OnShow_Native(ESlateVisibility& ShowVisibility)
-{
-	UUIPanelWidget::OnShow_Native(ShowVisibility);
-	OnEnabled.Execute();
-}
-
-void UPanelSpaceWidget::OnHide_Native(ESlateVisibility& HideVisibility)
-{
-	UUIPanelWidget::OnHide_Native(HideVisibility);
-	OnDisabled.Execute();
-}
-
 void UPanelSpaceWidget::ShowPanel(UUIPanelWidget* Panel)
 {
 	// 未显示空间情况
-	if (State != EPanelState::Display) SetShow(ShowVisibility);
+	if (State != EPanelState::Display) SetShow(GetVisibility());
 	
 	if (GetTopPanel() == Panel) return;
 	
@@ -57,15 +45,11 @@ void UPanelSpaceWidget::ShowPanel(UUIPanelWidget* Panel)
 
 void UPanelSpaceWidget::HidePanel(UUIPanelWidget* Panel)
 {
-	// const int LastPanelsNum = Panels.Num();
-	// Panels.Remove(Panel);
-	// if (LastPanelsNum == Panels.Num()) return;
-	
 	if (Panels.Remove(Panel) == 0) return;
 	Panel->SetHidden(OnHidePanel(Panel));
 
 	// 没有面板显示情况
-	if (Panels.Num() == 0) SetHidden(HiddenVisibility);
+	if (Panels.Num() == 0) SetHidden(GetVisibility());
 }
 
 UUIPanelWidget* UPanelSpaceWidget::GetTopPanel() const
@@ -110,7 +94,6 @@ void UPanelSpaceWidget::AddPanel(UUIPanelWidget* Panel)
 {
 	CHECK_ROOT_PANEL()
 	OnProcessPanel(Space->AddChild(Panel));
-	// if (!Panels.Find(Panel)) Panels.Add(Panel);
 }
 
 UPanelController* UPanelSpaceWidget::GetUser()

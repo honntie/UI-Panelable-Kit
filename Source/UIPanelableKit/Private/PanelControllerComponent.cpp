@@ -51,7 +51,6 @@ bool UPanelController::LogoutPanel(UUIPanelWidget* Panel)
 	if (PanelPool.Remove(Panel->GetClass()) == 0) return false;
 	
 	PanelSpace->RemoveFromParent();
-	Panel->OnRegistered();
 	Panel->SetController(nullptr);
 	return true;
 }
@@ -114,7 +113,6 @@ void UPanelController::InitPanel(UUIPanelWidget* Panel)
 	
 	Panel->SetController(this);
 	PanelSpace->AddPanel(Panel);
-	Panel->OnRegistered();
 }
 
 UPanelSpaceWidget* UPanelController::GetPanelSpace()
@@ -132,18 +130,7 @@ void UPanelController::SetPanelSpace(UPanelSpaceWidget* Space)
 {
 	if (IsValid(PanelSpace)) return;
 
-	// 注销上一个事件
-	// if (PanelSpace)
-	// {
-	// 	PanelSpace->OnEnabled.Unbind();
-	// 	PanelSpace->OnDisabled.Unbind();
-	// 	PanelSpace->OnLogouted();
-	// }
-
 	// 注册当前的事件
 	PanelSpace = Space;
 	PanelSpace->SetUser(this);
-	PanelSpace->OnEnabled.BindLambda([&](){ OnSpaceEnabled.Broadcast(); });
-	PanelSpace->OnDisabled.BindLambda([&](){ OnSpaceDisabled.Broadcast(); });
-	PanelSpace->OnRegistered();
 }
