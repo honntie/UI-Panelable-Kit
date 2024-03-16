@@ -17,12 +17,12 @@ class UIPANELABLEKIT_API UPanelController : public UPrimaryDataAsset
 private:
 	/// @description 面板空间的类型 \n
 	UPROPERTY(EditDefaultsOnly, meta=(Category="UI Layer Kit | Panel Controller"))
-	TSubclassOf<UPanelSpaceWidget> TargetSpace;
+	TSubclassOf<UPanelSpaceWidget> DefaultSpace = TSubclassOf<UPanelSpaceWidget>();
 #pragma endregion
 
 #pragma region 蓝图变量
 public:
-	/// @description 显示面板的Widget空间，空间已被释放或者控制还未使用时可以重新设置，否则其Setter将会失效，如果第一次Getter则会根据TargetSpace生成空间 \n
+	/// @description 默认显示面板的Widget空间，空间已被释放或者控制还未使用时可以重新设置，否则其Setter将会失效，如果第一次Getter则会根据TargetSpace生成空间 \n
 	UPROPERTY(BlueprintReadWrite, BlueprintSetter=SetPanelSpace, BlueprintGetter=GetPanelSpace, meta=(Category="UI Layer Kit | Panel Controller"))
 	UPanelSpaceWidget* PanelSpace = nullptr;
 

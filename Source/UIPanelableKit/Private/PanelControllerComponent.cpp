@@ -7,6 +7,14 @@
 
 // Sets default values for this component's properties
 UPanelController::UPanelController()
+
+#define CHECK_SPACE(Result) \
+	if (!IsValid(GetPanelSpace())) \
+	{ \
+		PIE_Error("Invaild Panel Space", "Please use a vaild panel space. Error Class:" + GetName()); \
+		return Result; \
+	}
+
 {
 	TargetSpace = TSubclassOf<UPanelSpaceWidget>();
 
@@ -42,11 +50,7 @@ bool UPanelController::RegisterPanelForcibly(UUIPanelWidget* Panel)
 
 bool UPanelController::LogoutPanel(UUIPanelWidget* Panel)
 {
-	if (!IsValid(PanelSpace))
-	{
-		PIE_Error("Invaild Panel Space", "Please use a vaild panel space. Error Class:" + GetName());
-		return false;
-	}
+	CHECK_SPACE(false)
 	
 	if (PanelPool.Remove(Panel->GetClass()) == 0) return false;
 	
@@ -57,12 +61,7 @@ bool UPanelController::LogoutPanel(UUIPanelWidget* Panel)
 
 UUIPanelWidget* UPanelController::PushUI(TSubclassOf<UUIPanelWidget> PanelTarget)
 {
-	// SetOnView(true);
-	if (!IsValid(PanelSpace))
-	{
-		PIE_Error("Invaild Panel Space", "Please use a vaild panel space. Error Class:" + GetName());
-		return nullptr;
-	}
+	CHECK_SPACE(nullptr)
 	
 	UUIPanelWidget* Target = GetPanelLazily(PanelTarget);
 	PanelSpace->ShowPanel(Target);
@@ -71,11 +70,7 @@ UUIPanelWidget* UPanelController::PushUI(TSubclassOf<UUIPanelWidget> PanelTarget
 
 void UPanelController::PopUI(bool IsLogout)
 {
-	if (!IsValid(PanelSpace))
-	{
-		PIE_Error("Invaild Panel Space", "Please use a vaild panel space. Error Class:" + GetName());
-		return;
-	}
+	CHECK_SPACE()
 
 	// 删除最后推出的面板
 	UUIPanelWidget* Panel = PanelSpace->GetTopPanel();
@@ -85,11 +80,7 @@ void UPanelController::PopUI(bool IsLogout)
 
 UUIPanelWidget* UPanelController::GetPanelLazily(TSubclassOf<UUIPanelWidget> PanelTarget)
 {
-	if (!IsValid(PanelSpace))
-	{
-		PIE_Error("Invaild Panel Space", "Please use a vaild panel space. Error Class:" + GetName());
-		return nullptr;
-	}
+	CHECK_SPACE(nullptr)
 	
 	UUIPanelWidget** RefPanel = PanelPool.Find(PanelTarget);
 	UUIPanelWidget* Panel;
@@ -105,11 +96,7 @@ UUIPanelWidget* UPanelController::GetPanelLazily(TSubclassOf<UUIPanelWidget> Pan
 
 void UPanelController::InitPanel(UUIPanelWidget* Panel)
 {
-	if (!IsValid(PanelSpace))
-	{
-		PIE_Error("Invaild Panel Space", "Please use a vaild panel space. Error Class:" + GetName());
-		return;
-	}
+	CHECK_SPACE()
 	
 	Panel->SetController(this);
 	PanelSpace->AddPanel(Panel);
@@ -119,8 +106,8 @@ UPanelSpaceWidget* UPanelController::GetPanelSpace()
 {
 	if (!IsValid(PanelSpace))
 	{
-		if (TargetSpace != TSubclassOf<UPanelSpaceWidget>())
-			SetPanelSpace(CreateWidget<UPanelSpaceWidget>(GetWorld(), TargetSpace));
+		if (DefaultSpace != TSubclassOf<UPanelSpaceWidget>())
+			SetPanelSpace(CreateWidget<UPanelSpaceWidget>(GetWorld(), DefaultSpace));
 		else SetPanelSpace(CreateWidget<UPanelSpaceWidget>(GetWorld()));
 	}
 	return PanelSpace;
