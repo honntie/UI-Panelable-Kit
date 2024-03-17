@@ -16,15 +16,15 @@ class UIPANELABLEKIT_API UPanelSpaceWidget : public UUIPanelWidget
 #pragma region 蓝图变量
 protected:
 	/// @description 默认创建的控制器类型 \n
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(Category="UI Layer Kit | Panel Space"))
-	TSubclassOf<UPanelController> DefaultController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(Category="UI Panelable Kit | Panel Space"))
+	TSubclassOf<UPanelController> DefaultUser;
 
 	/// @description 使用自身的控制器，如果不存在则会自动创建一个 \n
-	UPROPERTY(BlueprintReadWrite,BlueprintSetter=SetUser,BlueprintGetter=GetUser, meta=(Category="UI Layer Kit | Panel Space"))
+	UPROPERTY(BlueprintReadWrite,BlueprintSetter=SetUser,BlueprintGetter=GetUser, meta=(Category="UI Panelable Kit | Panel Space"))
 	UPanelController* User = nullptr;
 	
 	/// @description 当前已显示的所有面板, 索引越小面板越靠后 \n
-	UPROPERTY(BlueprintReadOnly, meta=(Category="UI Layer Kit | Panel Space"))
+	UPROPERTY(BlueprintReadOnly, meta=(Category="UI Panelable Kit | Panel Space"))
 	TArray<UUIPanelWidget*> Panels;
 #pragma endregion 
 
@@ -38,45 +38,45 @@ public:
 public:
 	/// @description 显示面板, 显示完成后会加进Panels并成为新的TopPanel \n
 	/// @param Panel 面板对象 \n
-	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | Panel Space"))
+	UFUNCTION(BlueprintCallable, meta=(Category="UI Panelable Kit | Panel Space"))
 	void ShowPanel(UUIPanelWidget* Panel);
 	
 	/// @description 隐藏面板， 隐藏前将自身从Panels删除 \n
 	/// @param Panel 面板对象 \n
-	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | Panel Space"))
+	UFUNCTION(BlueprintCallable, meta=(Category="UI Panelable Kit | Panel Space"))
 	void HidePanel(UUIPanelWidget* Panel);
 
 	/// @description 获取当前最顶层的面板, 也就是Panels的最末端 \n
 	/// @return 返回面板 \n
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(Category="UI Layer Kit | Panel Space"))
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(Category="UI Panelable Kit | Panel Space"))
 	UUIPanelWidget* GetTopPanel() const;
 #pragma endregion
 
 #pragma region 蓝图可重载函数
 public:
 	/// @description 显示最底层面板事件，触发ShowPanel时如果Panels为空则触发 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | Panel Space"))
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
 	void OnEnable();
 
 	/// @description 隐藏所有面板事件，当Panels为空后触发 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | Panel Space"))
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
 	void OnDisable();
 	
 	/// @description 新增面板时对面板的处理, 默认把面板大小覆盖到全屏 (当前默认仅支持CanvasPanel, HorizontalBox, VerticalBox, Overlay, 其他情况请自行重写覆盖该函数) \n
 	/// @param PanelSlot 被添加面板的插槽 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | Panel Space"))
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
 	void OnPanelProcess(UPanelSlot* PanelSlot);
 
 	/// @description 显示面板前的事件 \n
 	/// @param Target 需显示的面板 \n
 	/// @return 面板的显示属性 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | Panel Space"))
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
 	ESlateVisibility OnPanelShow(UUIPanelWidget* Target);
 
 	/// @description 隐藏面板前的事件 \n
 	/// @param Target 需隐藏的面板 \n
 	/// @return 面板的隐藏属性 \n
-	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Layer Kit | Panel Space"))
+	UFUNCTION(BlueprintNativeEvent, meta=(Category="UI Panelable Kit | Panel Space"))
 	ESlateVisibility OnPanelHide(UUIPanelWidget* Target);
 #pragma endregion
 
