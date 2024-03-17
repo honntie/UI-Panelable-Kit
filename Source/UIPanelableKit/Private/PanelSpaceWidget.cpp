@@ -34,11 +34,11 @@ void UPanelSpaceWidget::NativeOnInitialized()
 void UPanelSpaceWidget::ShowPanel(UUIPanelWidget* Panel)
 {
 	// 未显示空间情况
-	if (State != EPanelState::Display) SetShow(GetVisibility());
+	if (State != EPanelState::Display) OnEnable();
 	
 	if (GetTopPanel() == Panel) return;
 	
-	Panel->SetShow(OnShowPanel(Panel));
+	Panel->SetShow(OnPanelShow(Panel));
 	Panels.Remove(Panel);
 	Panels.Add(Panel);
 }
@@ -46,10 +46,10 @@ void UPanelSpaceWidget::ShowPanel(UUIPanelWidget* Panel)
 void UPanelSpaceWidget::HidePanel(UUIPanelWidget* Panel)
 {
 	if (Panels.Remove(Panel) == 0) return;
-	Panel->SetHidden(OnHidePanel(Panel));
+	Panel->SetHidden(OnPanelHide(Panel));
 
 	// 没有面板显示情况
-	if (Panels.Num() == 0) SetHidden(GetVisibility());
+	if (Panels.Num() == 0) OnDisable();
 }
 
 UUIPanelWidget* UPanelSpaceWidget::GetTopPanel() const
@@ -57,7 +57,15 @@ UUIPanelWidget* UPanelSpaceWidget::GetTopPanel() const
 	return Panels.Num() > 0 ? Panels.Last(0) : nullptr;
 }
 
-void UPanelSpaceWidget::OnProcessPanel_Implementation(UPanelSlot* PanelSlot)
+void UPanelSpaceWidget::OnEnable_Implementation()
+{
+}
+
+void UPanelSpaceWidget::OnDisable_Implementation()
+{
+}
+
+void UPanelSpaceWidget::OnPanelProcess_Implementation(UPanelSlot* PanelSlot)
 {
 	if (const auto CanvasSlot = Cast<UCanvasPanelSlot>(PanelSlot))
 	{
@@ -80,12 +88,12 @@ void UPanelSpaceWidget::OnProcessPanel_Implementation(UPanelSlot* PanelSlot)
 	}
 }
 
-ESlateVisibility UPanelSpaceWidget::OnShowPanel_Implementation(UUIPanelWidget* Target)
+ESlateVisibility UPanelSpaceWidget::OnPanelShow_Implementation(UUIPanelWidget* Target)
 {
 	return ESlateVisibility::Visible;
 }
 
-ESlateVisibility UPanelSpaceWidget::OnHidePanel_Implementation(UUIPanelWidget* Target)
+ESlateVisibility UPanelSpaceWidget::OnPanelHide_Implementation(UUIPanelWidget* Target)
 {
 	return ESlateVisibility::Collapsed;
 }
@@ -93,7 +101,7 @@ ESlateVisibility UPanelSpaceWidget::OnHidePanel_Implementation(UUIPanelWidget* T
 void UPanelSpaceWidget::AddPanel(UUIPanelWidget* Panel)
 {
 	CHECK_ROOT_PANEL()
-	OnProcessPanel(Space->AddChild(Panel));
+	OnPanelProcess(Space->AddChild(Panel));
 }
 
 UPanelController* UPanelSpaceWidget::GetUser()
