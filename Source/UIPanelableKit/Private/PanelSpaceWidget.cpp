@@ -104,9 +104,9 @@ UPanelController* UPanelSpaceWidget::GetUser()
 
 void UPanelSpaceWidget::SetUser(UPanelController* Target)
 {
-	if (User == nullptr)
-	{
-		User = Target;
-		Target->SetPanelSpace(this);
- 	}
+	if (Target == User) return;
+	else if (IsValid(Target) && IsValid(User)) return;
+	
+	User = Target;
+	Target->SetPanelSpace(this);
  }

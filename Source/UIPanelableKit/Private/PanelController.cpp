@@ -13,6 +13,21 @@
 		return Result; \
 	}
 
+void UPanelController::Init()
+{
+	if (IsValid(PanelSpace)) return;
+	CHECK_SPACE()
+	for (const TSubclassOf<UUIPanelWidget>& Target : InitPushPanels)
+		PushUI(Target);
+}
+
+void UPanelController::Reset()
+{
+	for (const auto& PairItem : PanelPool)
+		PairItem.Value->RemoveFromParent();
+	SetPanelSpace(nullptr);
+}
+
 bool UPanelController::RegisterPanel(UUIPanelWidget* Panel)
 {
 	UClass* PanelType = Panel->GetClass();
@@ -107,7 +122,8 @@ UPanelSpaceWidget* UPanelController::GetPanelSpace()
 
 void UPanelController::SetPanelSpace(UPanelSpaceWidget* Space)
 {
-	if (IsValid(PanelSpace)) return;
+	if (Space == PanelSpace) return;
+	else if (IsValid(Space) && IsValid(PanelSpace)) return;
 
 	// 注册当前的事件
 	PanelSpace = Space;

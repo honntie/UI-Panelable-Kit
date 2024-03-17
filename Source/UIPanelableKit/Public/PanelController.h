@@ -8,7 +8,7 @@
 #include "PanelController.generated.h"
 
 
-UCLASS(NotBlueprintable, DisplayName="Panel Controller")
+UCLASS(Blueprintable, DisplayName="Panel Controller")
 class UIPANELABLEKIT_API UPanelController : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
@@ -18,6 +18,10 @@ private:
 	/// @description 面板空间的类型 \n
 	UPROPERTY(EditDefaultsOnly, meta=(Category="UI Layer Kit | Panel Controller"))
 	TSubclassOf<UPanelSpaceWidget> DefaultSpace = TSubclassOf<UPanelSpaceWidget>();
+
+	/// @description 初始化时显示的面板，Push顺序为数组正序 \n
+	UPROPERTY(EditDefaultsOnly, meta=(Category="UI Layer Kit | Panel Controller"))
+	TSet<TSubclassOf<UUIPanelWidget>> InitPushPanels;
 #pragma endregion
 
 #pragma region 蓝图变量
@@ -34,6 +38,14 @@ protected:
 
 #pragma region 蓝图函数
 public:
+	/// @description 初始化，会将SpacePanel和InitPushPanels构建。如果SpacePanel已被存在则不会再次初始化 \n
+	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | Panel Controller"))
+	void Init();
+
+	/// @description 移除控制器和SpacePanel的所有面板 \n
+	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | Panel Controller"))
+	void Reset();
+	
 	/// @description 手动注册面板, 调用时不再需要自动创建 \n
 	/// @param Panel 加入注册的面板 \n
 	/// @return 是否注册成功 (不存在同类型面板)
