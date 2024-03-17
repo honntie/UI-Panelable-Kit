@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "PanelSpaceWidget.h"
-#include "PanelControllerComponent.generated.h"
+#include "PanelController.generated.h"
 
 
 UCLASS(NotBlueprintable, DisplayName="Panel Controller")
@@ -62,13 +62,6 @@ public:
 	/// @description 关闭最顶层面板 \n
 	UFUNCTION(BlueprintCallable, meta=(Category="UI Layer Kit | Panel Controller"))
 	void PopUI(bool IsLogout = false);
-#pragma endregion
-
-#pragma region 重载函数
-
-public:
-	// Sets default values for this component's properties
-	UPanelController();
 #pragma endregion
 
 #pragma region C++部分

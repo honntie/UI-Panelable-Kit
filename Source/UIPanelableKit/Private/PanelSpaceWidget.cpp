@@ -2,7 +2,7 @@
 
 
 #include "PanelSpaceWidget.h"
-#include "PanelControllerComponent.h"
+#include "..\Public\PanelController.h"
 #include "Components/PanelSlot.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBoxSlot.h"

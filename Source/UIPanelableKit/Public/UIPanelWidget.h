@@ -4,11 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "PanelTypeLibrary.h"
 #include "UIPanelWidget.generated.h"
 
 class UPanelController;
 
+UENUM(BlueprintType, meta=(Category="UI Layer Kit | Type"))
+enum class EPanelState : uint8
+{
+	Display,
+	Hidden
+};
 
 UCLASS(DisplayName="UI Panel")
 class UIPANELABLEKIT_API UUIPanelWidget : public UUserWidget
